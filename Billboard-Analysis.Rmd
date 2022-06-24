@@ -1,0 +1,26 @@
+---
+title: "Billboard-Analysis"
+output: html_document
+date: '2022-06-24'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(billboard)
+```
+
+```{r}
+x <- wiki_hot_100s |> 
+  as_tibble() |> 
+  mutate(year=as.numeric(year))
+```
+
+
+```{r}
+x |> 
+  group_by(year) |> 
+  distinct(artist) |> 
+  summarize(dis_artist=n())
+```
+
