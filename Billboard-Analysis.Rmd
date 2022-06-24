@@ -5,22 +5,32 @@ date: '2022-06-24'
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(billboard)
 ```
 
-```{r}
+```{r clean_data}
 x <- wiki_hot_100s |> 
   as_tibble() |> 
-  mutate(year=as.numeric(year))
+  mutate(year=parse_number(year))
 ```
 
 
-```{r}
+```{r make_plot}
 x |> 
   group_by(year) |> 
   distinct(artist) |> 
-  summarize(dis_artist=n())
+  summarize(dis_artist=n()) |> 
+  ggplot(aes(x=year,
+             y=dis_artist)) +
+    geom_point() +
+    geom_smooth(method="loess",formula="y~x",se=FALSE,color="magenta") +
+    theme_classic() +
+    labs(title="Number of Artists in Top 100 Songs",
+       subtitle="Association appears to be similar to a wave function",
+       x="Year",
+       y="Number of artists",
+       caption="Wiki Hot 100s")
 ```
 
